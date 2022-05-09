@@ -37,8 +37,6 @@ badWords.close()
 #########################################################################################################
 @client.event
 async def on_ready():
-    channel = client.get_channel(917243490965020682)
-   # await channel.send('ワンワン！')
     print('Wantaro Online!')
 
 
