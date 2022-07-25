@@ -9,6 +9,7 @@ intents=discord.Intents.all()
 jam = Jamdict()
 # using Jamdict(memory_mode=True) loads entire database into Wantaro
 # also makes the first lookup slow, so make a test lookup before event handler
+# your mom sucks btw
 load_dotenv('data\ids.env')
 TOKEN = os.getenv('DISCORD_TOKEN')
 jsaGenChat = int(os.getenv('JSAGENCHAT'))
