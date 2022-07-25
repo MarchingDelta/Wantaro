@@ -9,7 +9,7 @@ intents=discord.Intents.all()
 jam = Jamdict()
 # using Jamdict(memory_mode=True) loads entire database into Wantaro
 # also makes the first lookup slow, so make a test lookup before event handler
-load_dotenv('ids.env')
+load_dotenv('data\ids.env')
 TOKEN = os.getenv('DISCORD_TOKEN')
 jsaGenChat = int(os.getenv('JSAGENCHAT'))
 testGrounds = int(os.getenv('TESTGROUNDS'))
@@ -28,7 +28,7 @@ client.remove_command('help')
 
 blacklist = [583450025548316692]
 bad_words = []
-badWords = open("bad words.txt", 'r', encoding='utf-8')
+badWords = open(r'data\bad words.txt', 'r', encoding='utf-8')
 for word in badWords.readlines():
     bad_words.append(word.strip())
 print(bad_words)
@@ -54,16 +54,16 @@ async def on_message(message):
 
 @client.event
 async def on_member_join(member):
-    channel = client.get_channel(jsaGenChat)
-    role = (client.get_guild(testServer)).get_role(jsaMember)
-    await member.add_roles(role)
+    channel = client.get_channel(testGrounds)
+    role = (client.get_guild(jsaServer)).get_role(jsaMember)
+    await member.add_roles(role) 
     print(f'{member.mention} has joined the server.')
     await channel.send(f'JSAへようこそ、{member.mention}！')
 
 # error handler 
 @client.event
 async def on_command_error(ctx, error):
-    errorF = open("errorlog.txt", 'a+', encoding='utf8')
+    errorF = open("data\errorlog.txt", 'a+', encoding='utf8')
     if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
         errorF.write(f'{ctx.author} entered no args into [{ctx.command}]\n')
         errorF.write(f'User input: {ctx.message.content}\n\n')
@@ -88,7 +88,6 @@ async def on_command_error(ctx, error):
 @client.command()
 async def lookup(ctx, arg): # first letter has to be capitalized if its a proper noun
     if (arg in bad_words):
-        print('asdf')
         await ctx.message.add_reaction('🤨')
     result = jam.lookup(arg, True) # send a message about this if arg is in English 
     string = ""
@@ -110,7 +109,7 @@ async def lookup(ctx, arg): # first letter has to be capitalized if its a proper
 @client.command()
 async def ping(ctx):
     await ctx.send('ワンワン！')
-    await ctx.send(str(client.latency) + 'ワン')
+    await ctx.send(str(client.latency) + ' ms')
 
 @client.command()
 async def wantaro(ctx):
@@ -134,7 +133,7 @@ async def help(ctx):
     for item in client.commands:
         commandList.append(item.name)
     commandList.sort()
-    file = open("commands.txt", encoding='utf-8')
+    file = open("data\commands.txt", encoding='utf-8')
     for command in commandList:
         line = file.readline()
         embed.add_field(name=command,value=line)
@@ -161,7 +160,7 @@ async def iam(ctx, arg):
     
 @client.command()
 async def suggestion(ctx):
-    suss = open("suggestions.txt", 'a+', encoding='utf-8')
+    suss = open("data\suggestions.txt", 'a+', encoding='utf-8')
     suss.write(f'{ctx.message.author}: {ctx.message.content}\n\n')
     suss.close()
     await ctx.message.delete()
@@ -170,8 +169,8 @@ async def suggestion(ctx):
 
 
 
-file = open("commands.txt", encoding='utf-8')
-errorF = open("errorlog.txt", 'a+')
+file = open("data\commands.txt", encoding='utf-8')
+errorF = open("data\errorlog.txt", 'a+')
 check1 = len(file.readlines())
 check2 = len(client.commands)
 if(check1 != check2):
