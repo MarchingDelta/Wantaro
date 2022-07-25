@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import Bot
 from jamdict import Jamdict
-
+#sdkjf;askdjfkl;as djfkl;asdj ;fkasjd;lf jas;l
 
 intents=discord.Intents.all()
 jam = Jamdict()
